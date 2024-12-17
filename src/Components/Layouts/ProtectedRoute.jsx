@@ -1,14 +1,13 @@
-
 import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ children }) => {
-  const isAuthenticated = true; // Cambia esta lógica con tu sistema de autenticación
+  const isAuthenticated = !!localStorage.getItem('auth'); // Verifica si existe el auth en localStorage
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login" replace />; // Redirige al login si no está autenticado
   }
 
-  return children;
+  return children; // Muestra las rutas protegidas si está autenticado
 };
 
 export default ProtectedRoute;

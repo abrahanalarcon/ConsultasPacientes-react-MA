@@ -15,7 +15,7 @@ const MainLayout = () => {
         <Aside />
         <div className="flex-1 p-4">
           <Routes>
-            <Route path="/" element={<Pacientes />} />
+            <Route path="/pacientes" element={<Pacientes />} />
             <Route path="/doctores" element={<Doctores />} />
             <Route path="/agregardoc" element={<Agregardoc />} />
             <Route path="/agregarpa" element={<Agregarpa />} />
