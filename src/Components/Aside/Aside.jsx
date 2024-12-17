@@ -2,12 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Aside = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Controla el estado del dropdown
   const [activeOption, setActiveOption] = useState(null); // Controla la opción activa
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
 
   const toggleSubmenu = (option) => {
     setActiveOption(activeOption === option ? null : option); // Activa o desactiva el submenú
@@ -17,13 +12,13 @@ const Aside = () => {
   const menuData = [
     { title: "Servicio al cliente", suboptions: [
         { title: "Solicitud Pension", link: "/doctores" },
-        { title: "Consulta de Solitud", link: "/" },
+        { title: "Consulta de Solitud", link: "/pacientes" },
         { title: "Registro de Certificacion", link: "/doctores" },
-        { title: "Consulta de Certificacion", link: "/" },
+        { title: "Consulta de Certificacion", link: "/pacientes" },
         { title: "Solicitud de Carta", link: "/doctores" },
-        { title: "Cuadre por Usuario", link: "/" },
+        { title: "Cuadre por Usuario", link: "/pacientes" },
         { title: "Cuadre por General", link: "/doctores" },
-        { title: "Remision de Expediente", link: "/" }
+        { title: "Remision de Expediente", link: "/pacientes" }
       ]
     },
     { title: "Cuentas Individuales", suboptions: [
@@ -50,7 +45,7 @@ const Aside = () => {
       { title: "Registros de Datos", link: "/subopcion3-3" },
       { title: "Remision Expedinetes", link: "/subopcion3-3" }
     ] 
-  }, // Sin subopciones
+  },
     { title: "Otrogamiento", suboptions: [
         { title: "Recepcion", link: "/subopcion5-1" },
         { title: "Procesamiento", link: "/subopcion5-2" },
@@ -58,6 +53,11 @@ const Aside = () => {
         { title: "Corresion de Cuentas", link: "/subopcion5-2" }
       ]
     },
+    { title: "Mi cuenta", suboptions: [
+      { title: "Cerrar Sesion", link: "/" },
+      
+    ]
+  },
   ];
 
   return (
@@ -73,60 +73,41 @@ const Aside = () => {
 
       {/* Menú */}
       <nav className="mt-8">
-        {/* Botón del dropdown */}
-        <button
-          onClick={toggleDropdown}
-          className="flex items-center justify-between w-full px-4 py-2 bg-gray-50 text-gray-700 font-semibold rounded-lg hover:bg-gray-100 transition-all"
-        >
-          Acceso Directos
-          <span
-            className={`transform transition-transform ${
-              isDropdownOpen ? "rotate-180" : ""
-            }`}
-          >
-            ⌄
-          </span>
-        </button>
+        {/* Opciones del menú */}
+        {menuData.map((menu, index) => (
+          <div key={index} className="bg-white border border-gray-300 rounded-lg mb-1">
+            {/* Título de la opción del menú */}
+            <button
+              onClick={() => toggleSubmenu(`opcion${index + 1}`)}
+              className="flex items-center justify-between px-4 py-2 text-gray-600 bg-white border border-gray-200 w-full hover:bg-gray-100 cursor-pointer"
+            >
+              {menu.title}
+              <span
+                className={`transform transition-transform inline-block ${
+                  activeOption === `opcion${index + 1}` ? "rotate-180" : ""
+                }`}
+              >
+                ⌄
+              </span>
+            </button>
 
-        {/* Opciones del dropdown */}
-        {isDropdownOpen && (
-          <ul className="mt-4 space-y-2">
-            {/* Opciones del menú */}
-            {menuData.map((menu, index) => (
-              <li key={index} className="bg-white border border-gray-300 rounded-lg">
-                <button
-                  onClick={() => toggleSubmenu(`opcion${index + 1}`)}
-                  className="flex items-center justify-between px-4 py-2 text-gray-600 bg-white border border-gray-200 w-full hover:bg-gray-100 cursor-pointer"
-                >
-                  {menu.title}
-                  <span
-                    className={`transform transition-transform inline-block ${
-                      activeOption === `opcion${index + 1}` ? "rotate-180" : ""
-                    }`}
-                  >
-                    ⌄
-                  </span>
-                </button>
-
-                {/* Submenús */}
-                {activeOption === `opcion${index + 1}` && menu.suboptions.length > 0 && (
-                  <ul className="mt-2 space-y-1 bg-gray-100 rounded-lg p-2">
-                    {menu.suboptions.map((suboption, subIndex) => (
-                      <li key={subIndex}>
-                        <Link
-                          to={suboption.link}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 rounded-lg transition-all"
-                        >
-                          {suboption.title}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            ))}
-          </ul>
-        )}
+            {/* Submenús */}
+            {activeOption === `opcion${index + 1}` && menu.suboptions.length > 0 && (
+              <ul className="mt-2 space-y-1 bg-gray-100 rounded-lg p-2">
+                {menu.suboptions.map((suboption, subIndex) => (
+                  <li key={subIndex}>
+                    <Link
+                      to={suboption.link}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 rounded-lg transition-all"
+                    >
+                      {suboption.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ))}
       </nav>
     </aside>
   );
